@@ -29,12 +29,21 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   dio:
-
+  provider:
+  logger:
+  json_annotation:
+  hive: ^2.0.4 #数据库
+  bot_toast: ^4.0.0 #alert
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  flutter_localizations:
+    sdk: flutter
+  flutter_cupertino_localizations: ^1.0.1
+  
+  build_runner:
+  json_serializable:
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -48,8 +57,15 @@ flutter:
   
   assets:
     - images/EMOJI04-200.png
-    - images/2.0x/EMOJI04-200.png
-    - images/3.0x/EMOJI04-200.png
+    - images/tab1_normal.png
+    - images/tab1_selected.png
+    - images/tab2_normal.png
+    - images/tab2_selected.png
+    - images/tab3_normal.png
+    - images/tab3_selected.png
+
+    - images/login_logo.png
+    - images/login_bg.png
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
