@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_flutter_app/ui_kit/alert.dart';
-import 'package:my_flutter_app/api/network_handler.dart';
-import 'package:my_flutter_app/api/api_service.dart';
+import 'package:my_flutter_app/network/network_handler.dart';
+import 'package:my_flutter_app/models/models_export.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -105,14 +105,14 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  _loginAction() {
+  _loginAction() async {
     var username = _userNameCtr.text.trim();
     var password = _passwordCtr.text.trim();
     if (username.isEmpty || password.isEmpty) {
       SLAlert.toast("请补全信息");
       return;
     }
-    NetworkHandler.request(API.login, parameters: {
+    var res = await NetworkHandler.request(API.login, parameters: {
       "username": username,
       "password": password,
       "client_id": "webApp",
@@ -120,5 +120,10 @@ class _LoginPageState extends State<LoginPage> {
       "grant_type": "password",
       "scope": "app"
     });
+    if (res.originData["access_token"] == null) {
+      return;
+    }
+    final model = ModelLogin.fromJson(res.originData);
+    print(model.accessToken);
   }
 }
