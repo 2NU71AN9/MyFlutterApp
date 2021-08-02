@@ -1,3 +1,5 @@
+import 'package:my_flutter_app/services/user_data_service.dart';
+
 enum API {
   login,
   userdata,
@@ -21,6 +23,8 @@ class APIService {
     switch (api) {
       case API.login:
         return "/api-auth/oauth/token";
+      case API.userdata:
+        return "/api-user/mobile/user/getLoginAppUser";
       default:
         return 'http://test_api.com/';
     }
@@ -31,13 +35,20 @@ class APIService {
       case API.login:
         return null;
       default:
-        return {};
+        var token = UserDataService.shared.loginData?.accessToken;
+        if (token != null) {
+          return {"Authorization": "Bearer $token"};
+        } else {
+          return {};
+        }
     }
   }
 
   // 请求方式 GET POST PUT DELETE ...
   String get method {
     switch (api) {
+      case API.userdata:
+        return "GET";
       default:
         return "POST";
     }
@@ -46,6 +57,7 @@ class APIService {
   String get contentType {
     switch (api) {
       case API.login:
+      case API.userdata:
         return "application/x-www-form-urlencoded";
       default:
         return "application/json; charset=utf-8";

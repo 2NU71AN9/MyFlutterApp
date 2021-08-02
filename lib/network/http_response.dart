@@ -20,7 +20,7 @@ class HttpResponse {
     }
     final dict = (json as Map<String, dynamic>);
     response.originData = dict;
-    response.code = int.parse(dict["code"] ?? dict["resp_code"] ?? "300");
+    response.code = dict["code"] ?? dict["resp_code"] ?? 300;
     response.message = dict["message"] ?? dict["msg"] ?? dict["resp_msg"];
     response.data = dict["data"] ?? dict["datas"] ?? dict["odata"];
     return response;

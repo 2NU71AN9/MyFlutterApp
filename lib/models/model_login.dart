@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'model_login.g.dart';
 
 @JsonSerializable()
-class ModelLogin extends BaseModel {
+class ModelLogin {
   @JsonKey(name: 'access_token')
   final String? accessToken;
   @JsonKey(name: 'token_type')
@@ -67,11 +67,4 @@ class ModelLogin extends BaseModel {
       refreshToken.hashCode ^
       expiresIn.hashCode ^
       scope.hashCode;
-}
-
-class BaseModel {
-  BaseModel();
-  factory BaseModel.fromJson(Map<String, dynamic> json) {
-    return BaseModel();
-  }
 }

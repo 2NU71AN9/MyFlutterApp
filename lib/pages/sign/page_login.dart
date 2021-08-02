@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:my_flutter_app/ui_kit/alert.dart';
 import 'package:my_flutter_app/network/network_handler.dart';
 import 'package:my_flutter_app/models/models_export.dart';
+import 'package:my_flutter_app/services/user_data_service.dart';
+import 'package:my_flutter_app/tabbar.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -124,6 +126,18 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
     final model = ModelLogin.fromJson(res.originData);
-    print(model.accessToken);
+    UserDataService.shared.saveLoginData(model);
+    UserDataService.shared.loadUserData().then((value) {
+      goHomePage();
+    }).catchError((e) {});
+  }
+
+  goHomePage() {
+    Navigator.pushAndRemoveUntil(context,
+        MaterialPageRoute(builder: (BuildContext context) {
+      return TabBarCtr();
+    }), (route) {
+      return false;
+    });
   }
 }

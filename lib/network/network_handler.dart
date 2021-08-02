@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'http_response.dart';
 import 'api_service.dart';
@@ -75,18 +77,19 @@ class NetworkHandler {
 }
 
 class CustomInterceptors extends Interceptor {
-  final log = Logger();
+  final logger = Logger();
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    log.d(
-        '请求[${options.method}] => 地址: ${options.baseUrl}${options.path}\n参数: ${options.queryParameters}');
+    logger.d(
+        '网络请求[${options.method}] => 地址: ${options.baseUrl}${options.path}\n参数: ${options.queryParameters}');
     return super.onRequest(options, handler);
   }
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    log.d(
-        '请求返回[${response.statusCode}] => 地址: ${response.requestOptions.baseUrl}${response.requestOptions.path}\n返回数据: $response');
+    logger.d(
+        '请求成功[${response.statusCode}] => 地址: ${response.requestOptions.baseUrl}${response.requestOptions.path}');
+    log("返回数据: $response");
     final res = HttpResponse.fromJSON(response.data);
     if (!res.isSuccess) {
       SLAlert.toast(res.message);
@@ -96,8 +99,8 @@ class CustomInterceptors extends Interceptor {
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
-    log.d(
-        '请求报错[${err.response?.statusCode}] => 地址: ${err.requestOptions.baseUrl}${err.requestOptions.path}\n返回数据: ${err.response}');
+    logger.d(
+        '请求失败[${err.response?.statusCode}] => 地址: ${err.requestOptions.baseUrl}${err.requestOptions.path}\n返回数据: ${err.error}');
     if (err.response?.data is Map) {
       var dict = (err.response?.data as Map<String, dynamic>);
       SLAlert.toast(dict["message"] ?? dict["resp_msg"]);

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'constant/my_theme.dart';
-import 'tabbar.dart';
 import 'pages/sign/page_login.dart';
 import 'package:bot_toast/bot_toast.dart';
+import 'package:my_flutter_app/services/user_data_service.dart';
+import 'package:my_flutter_app/tabbar.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await UserDataService.shared.loadLoginDataFromDisk();
   runApp(MyApp());
 }
 
@@ -14,8 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // home: TabBarCtr(),
-      home: LoginPage(),
+      home: UserDataService.shared.isLogin ? TabBarCtr() : LoginPage(),
       builder: BotToastInit(),
       navigatorObservers: [
         BotToastNavigatorObserver(),
