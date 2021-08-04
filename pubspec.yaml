@@ -34,7 +34,9 @@ dependencies:
   json_annotation:
   shared_preferences: ^2.0.6
   bot_toast: ^4.0.0 #alert
-
+  flutter_keyboard_visibility: ^5.0.3
+  location: ^4.2.0
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -44,6 +46,12 @@ dev_dependencies:
   
   build_runner:
   json_serializable:
+  flutter_ume: ^0.2.0-dev.0
+  flutter_ume_kit_ui: ^0.2.0-dev.0
+  flutter_ume_kit_device: ^0.2.0-dev.0
+  flutter_ume_kit_perf: ^0.2.0-dev.0
+  flutter_ume_kit_show_code: ^0.2.0-dev.0
+  flutter_ume_kit_console: ^0.2.0-dev.0
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

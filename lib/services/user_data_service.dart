@@ -4,10 +4,9 @@ import 'package:my_flutter_app/models/model_login.dart';
 import 'package:my_flutter_app/models/models_export.dart';
 import 'package:my_flutter_app/network/network_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:my_flutter_app/main.dart';
 import 'package:my_flutter_app/pages/sign/page_login.dart';
 
-class UserDataService {
+class UserDataService with ChangeNotifier {
   ModelLogin? loginData;
   ModelUser? userData;
   SharedPreferences? _prefs;
@@ -44,8 +43,15 @@ class UserDataService {
     if (!res.isSuccess) {
       throw Error();
     }
-    userData = ModelUser.fromJson(res.originData);
+    userData = ModelUser.fromJson(res.data);
+    notifyListeners();
     return userData;
+  }
+
+  // 测试provider用
+  editUsername(String name) {
+    userData = userData?.copyWith(username: name);
+    notifyListeners();
   }
 
   // 退出登录

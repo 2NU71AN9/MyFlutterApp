@@ -1,6 +1,6 @@
 import 'dart:developer';
-
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'http_response.dart';
 import 'api_service.dart';
 import 'package:my_flutter_app/ui_kit/alert.dart';
@@ -89,7 +89,9 @@ class CustomInterceptors extends Interceptor {
   void onResponse(Response response, ResponseInterceptorHandler handler) {
     logger.d(
         '请求成功[${response.statusCode}] => 地址: ${response.requestOptions.baseUrl}${response.requestOptions.path}');
-    log("返回数据: $response");
+    if (kDebugMode) {
+      log("返回数据: $response");
+    }
     final res = HttpResponse.fromJSON(response.data);
     if (!res.isSuccess) {
       SLAlert.toast(res.message);

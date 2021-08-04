@@ -22,7 +22,11 @@ class _LoginPageState extends State<LoginPage> {
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          Image.asset("images/login_bg.png"),
+          Image.asset(
+            "images/login_bg.png",
+            fit: BoxFit.cover,
+            width: double.infinity,
+          ),
           SafeArea(
             child: Container(
               padding: EdgeInsets.fromLTRB(50, 0, 50, 0),
