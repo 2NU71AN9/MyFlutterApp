@@ -25,7 +25,10 @@ class _TabBarCtrState extends State<TabBarCtr> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pageList[_curIndex],
+      body: IndexedStack(
+        index: _curIndex,
+        children: _pageList,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
