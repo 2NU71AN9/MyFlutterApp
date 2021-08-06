@@ -1,6 +1,8 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:my_flutter_app/services/user_data_service.dart';
 import 'http_response.dart';
 import 'api_service.dart';
 import 'package:my_flutter_app/ui_kit/alert.dart';
@@ -8,12 +10,12 @@ import 'package:logger/logger.dart';
 export 'api_service.dart';
 export 'http_response.dart';
 
-/// 请求异常的回调函数类型
 typedef OnFailure = void Function(HttpResponse response);
 
 class NetworkHandler {
-  static final NetworkHandler _instance = NetworkHandler._internal();
-  factory NetworkHandler() => _instance;
+  static final NetworkHandler instance = NetworkHandler._internal();
+  factory NetworkHandler() => instance;
+  BuildContext? ctx;
 
   NetworkHandler._internal() {
     init();
@@ -36,10 +38,10 @@ class NetworkHandler {
   static Future<HttpResponse> request(API api,
       {Map<String, dynamic>? parameters, OnFailure? failure}) async {
     var service = APIService(api: api, parameters: parameters);
-    NetworkHandler._instance._dio?.options.baseUrl = service.baseUrl;
-    NetworkHandler._instance._dio?.options.headers = service.header;
-    NetworkHandler._instance._dio?.options.contentType = service.contentType;
-    NetworkHandler._instance._dio?.options.method = service.method;
+    NetworkHandler.instance._dio?.options.baseUrl = service.baseUrl;
+    NetworkHandler.instance._dio?.options.headers = service.header;
+    NetworkHandler.instance._dio?.options.contentType = service.contentType;
+    NetworkHandler.instance._dio?.options.method = service.method;
 
     var cancel;
     if (service.showLoading) {
@@ -47,7 +49,7 @@ class NetworkHandler {
     }
 
     try {
-      var response = await NetworkHandler._instance._dio
+      var response = await NetworkHandler.instance._dio
           ?.request(service.path, queryParameters: service.parameters);
       if (service.showLoading) {
         cancel();
@@ -62,6 +64,10 @@ class NetworkHandler {
         final res = HttpResponse.fromJSON(e.response?.data);
         if (failure != null) {
           failure(res);
+        }
+        if (HttpResponse.logoutCode.contains(res.code) &&
+            NetworkHandler.instance.ctx != null) {
+          UserDataService.shared.logout(NetworkHandler.instance.ctx!);
         }
         return res;
       } else {
@@ -102,7 +108,7 @@ class CustomInterceptors extends Interceptor {
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
     logger.d(
-        '请求失败[${err.response?.statusCode}] => 地址: ${err.requestOptions.baseUrl}${err.requestOptions.path}\n返回数据: ${err.error}');
+        '请求失败[${err.response?.statusCode}] => 地址: ${err.requestOptions.baseUrl}${err.requestOptions.path}\n返回数据: ${err.toString()}');
     if (err.response?.data is Map) {
       var dict = (err.response?.data as Map<String, dynamic>);
       SLAlert.toast(dict["message"] ?? dict["resp_msg"]);

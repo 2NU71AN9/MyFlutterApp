@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:my_flutter_app/network/network_handler.dart';
 import 'pages/home/page_home.dart';
 import 'pages/discover/page_discover.dart';
 import 'pages/profile/page_profile.dart';
@@ -20,10 +21,14 @@ class _TabBarCtrState extends State<TabBarCtr> {
   @override
   void initState() {
     super.initState();
+    UserDataService.shared.loadUserData().catchError((err) {
+      UserDataService.shared.logout(context);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    NetworkHandler.instance.ctx = context;
     return Scaffold(
       body: IndexedStack(
         index: _curIndex,

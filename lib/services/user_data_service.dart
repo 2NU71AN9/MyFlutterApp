@@ -54,16 +54,18 @@ class UserDataService with ChangeNotifier {
     notifyListeners();
   }
 
-  // 退出登录
-  logout(BuildContext context) {
+  // 退出登录 context控制跳转登录页
+  logout(BuildContext? context) {
     loginData = null;
     userData = null;
     _prefs?.remove('LoginData');
-    Navigator.pushAndRemoveUntil(context,
-        MaterialPageRoute(builder: (BuildContext context) {
-      return LoginPage();
-    }), (route) {
-      return false;
-    });
+    if (context != null) {
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (BuildContext context) {
+        return LoginPage();
+      }), (route) {
+        return false;
+      });
+    }
   }
 }

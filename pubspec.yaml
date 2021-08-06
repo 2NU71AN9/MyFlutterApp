@@ -37,6 +37,7 @@ dependencies:
   flutter_keyboard_visibility: ^5.0.3
   location: ^4.2.0
   flutter_easyrefresh:  ^2.2.1
+  package_info: ^2.0.2 #项目名称,版本号等
   
 dev_dependencies:
   flutter_test:

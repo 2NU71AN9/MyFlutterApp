@@ -18,6 +18,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    NetworkHandler.instance.ctx = context;
     return Scaffold(
       body: Stack(
         alignment: Alignment.bottomCenter,
